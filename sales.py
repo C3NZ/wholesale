@@ -21,6 +21,22 @@ def register_parser():
         help="Show the correlation between all of the features in our dataset",
     )
 
+    parser.add_argument(
+        "-s",
+        "--scale",
+        dest="scale",
+        action="store_true",
+        help="Scale our data using both minmax and standard scaling",
+    )
+
+    parser.add_argument(
+        "-m",
+        "--minmax",
+        des="minmax",
+        action="store_true",
+        help="Scaleour data using minmax scaling",
+    )
+
     return parser
 
 
