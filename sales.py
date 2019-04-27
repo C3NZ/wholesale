@@ -8,6 +8,22 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
+def register_parser():
+    parser = argparse.ArgumentParser(
+        description="Applying machine learning to wholesale sales"
+    )
+
+    parser.add_argument(
+        "-c",
+        "--correlate",
+        dest="correlate",
+        action="store_true",
+        help="Show the correlation between all of the features in our dataset",
+    )
+
+    return parser
+
+
 def create_model():
     pass
 
@@ -24,15 +40,18 @@ def visualize_correlation(sales_data: pd.DataFrame):
 
 
 def main():
-    # Import df
+    # Import df, create a separate one for our labels, and then drop
+    # redundant columns
     sales_data = pd.read_csv("wholesale_customers_data.csv")
-
-    # Slice out channels
     channels = sales_data["Channel"]
-
     sales_data.drop(labels=["Channel", "Region"], axis=1, inplace=True)
-    print(sales_data.to_numpy())
-    visualize_correlation(sales_data)
+
+    parser = register_parser()
+
+    args = parser.parse_args()
+
+    if args.correlate:
+        visualize_correlation(sales_data)
 
 
 if __name__ == "__main__":
