@@ -32,7 +32,7 @@ def register_parser():
     parser.add_argument(
         "-m",
         "--minmax",
-        des="minmax",
+        dest="minmax",
         action="store_true",
         help="Scaleour data using minmax scaling",
     )
