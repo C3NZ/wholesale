@@ -82,8 +82,11 @@ def get_model_data(features: pd.DataFrame, labels: pd.DataFrame, scaling: str = 
             features, labels, random_state=42
         )
     elif scaling == "MinMax":
+        scaler = MinMaxScaler()
+        minmax_feats = scaler.fit_transform(features)
+        print(minmax_feats)
         training_X, testing_X, training_Y, testing_Y = train_test_split(
-            features, labels, random_state=42
+            minmax_feats, labels, random_state=42
         )
     else:
         training_X, testing_X, training_Y, testing_Y = train_test_split(
@@ -114,7 +117,16 @@ def main():
         visualize_correlation(sales_data)
 
     if args.standard:
-        get_model_data(sales_data, channels, scaling="Standard")
+        all_model_data.append(
+            (
+                "Standard scaling",
+                get_model_data(sales_data, channels, scaling="Standard"),
+            )
+        )
+    if args.minmax:
+        all_model_data.append(
+            ("MinMax scaling", get_model_data(sales_data, channels, scaling="MinMax"))
+        )
 
 
 if __name__ == "__main__":
