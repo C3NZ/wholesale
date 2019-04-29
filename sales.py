@@ -78,14 +78,12 @@ def get_model_data(features: pd.DataFrame, labels: pd.DataFrame, scaling: str = 
     if scaling == "Standard":
         scaler = StandardScaler()
         std_scaled_feats = scaler.fit_transform(features)
-        print(std_scaled_feats)
         training_X, testing_X, training_Y, testing_Y = train_test_split(
-            features, labels, random_state=42
+            std_scaled_feats, labels, random_state=42
         )
     elif scaling == "MinMax":
         scaler = MinMaxScaler()
         minmax_feats = scaler.fit_transform(features)
-        print(minmax_feats)
         training_X, testing_X, training_Y, testing_Y = train_test_split(
             minmax_feats, labels, random_state=42
         )
@@ -105,8 +103,9 @@ def calculate_pca(model_data: tuple, n_components: int = 2):
     training_X, testing_X, training_Y, testing_Y = model_data[1]
 
     pca = PCA(n_components=n_components)
+    print("--- START PCA ---")
     print(
-        f"Reducing dimensionality of our data that has {data_scaling} with {n_components} components\n"
+        f"Reducing dimensionality of our data that has {data_scaling} to {n_components} components\n"
     )
     reduced_dimensions = pca.fit_transform(training_X)
 
@@ -116,7 +115,7 @@ def calculate_pca(model_data: tuple, n_components: int = 2):
     print(info_preserved)
 
     print(f"Total information preserved: {sum(info_preserved)}")
-
+    print("--- END PCA ---\n")
     return reduced_dimensions
 
 
