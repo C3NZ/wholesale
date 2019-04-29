@@ -129,6 +129,16 @@ def create_cluster(data: np.ndarray):
     return cluster
 
 
+def visualize_reduced_cluster(points: np.ndarray, clusters: np.ndarray):
+    """
+        Visualize our dimensionally reduced data and it's' clusters
+    """
+    print("Drawing")
+    sns.scatterplot(x=points[:, 0], y=points[:, 1])
+    sns.scatterplot(x=clusters[:, 0], y=clusters[:, 1])
+    plt.show()
+
+
 def main():
     """
         Main execution point of our function
@@ -164,10 +174,12 @@ def main():
         )
 
     for model_data in all_model_data:
+
         training_X, testing_X, training_Y, testing_Y = model_data[1]
         scaled_dimensions = calculate_pca(model_data)
         cluster = create_cluster(training_X)
         scaled_cluster = create_cluster(scaled_dimensions)
+        visualize_reduced_cluster(scaled_dimensions, scaled_cluster.cluster_centers_)
 
 
 if __name__ == "__main__":
