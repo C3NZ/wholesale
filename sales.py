@@ -154,7 +154,7 @@ def main():
         )
 
     for model_data in all_model_data:
-        calculate_pca(model_data)
+        reduced_dimensions = calculate_pca(model_data)
 
 
 if __name__ == "__main__":
