@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
@@ -96,19 +97,43 @@ def get_model_data(features: pd.DataFrame, labels: pd.DataFrame, scaling: str = 
     return training_X, testing_X, training_Y, testing_Y
 
 
+def calculate_pca(model_data: tuple, n_components: int = 2):
+    """
+        Reduce the dimensionality of given model data using PCA.
+    """
+    data_scaling = model_data[0]
+    training_X, testing_X, training_Y, testing_Y = model_data[1]
+
+    pca = PCA(n_components=n_components)
+    print(
+        f"Reducing dimensionality of our data that has {data_scaling} with {n_components} components\n"
+    )
+    reduced_dimensions = pca.fit_transform(training_X)
+
+    info_preserved = pca.explained_variance_ratio_
+
+    print("Information preserved through each component:")
+    print(info_preserved)
+
+    print(f"Total information preserved: {sum(info_preserved)}")
+
+    return reduced_dimensions
+
+
 def main():
     """
         Main execution point of our function
     """
-    # Import df, create a separate one for our labels, and then drop
+    # Import df, create a separate one for our labels, and then
     # redundant columns
     sales_data = pd.read_csv("wholesale_customers_data.csv")
     channels = sales_data["Channel"]
     sales_data.drop(labels=["Channel", "Region"], axis=1, inplace=True)
 
+    # Collection of all of our data
     all_model_data = []
-
     all_model_data.append(("No scaling", get_model_data(sales_data, channels)))
+
     parser = register_parser()
 
     args = parser.parse_args()
@@ -123,10 +148,14 @@ def main():
                 get_model_data(sales_data, channels, scaling="Standard"),
             )
         )
+
     if args.minmax:
         all_model_data.append(
             ("MinMax scaling", get_model_data(sales_data, channels, scaling="MinMax"))
         )
+
+    for model_data in all_model_data:
+        calculate_pca(model_data)
 
 
 if __name__ == "__main__":
