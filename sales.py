@@ -2,6 +2,7 @@ import argparse
 from collections import namedtuple
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 from sklearn.cluster import KMeans
@@ -119,6 +120,15 @@ def calculate_pca(model_data: tuple, n_components: int = 2):
     return reduced_dimensions
 
 
+def create_cluster(data: np.ndarray):
+    """
+        Create the clusters
+    """
+    cluster = KMeans(n_clusters=2)
+    cluster.fit_transform(data)
+    return cluster
+
+
 def main():
     """
         Main execution point of our function
@@ -154,7 +164,10 @@ def main():
         )
 
     for model_data in all_model_data:
-        reduced_dimensions = calculate_pca(model_data)
+        training_X, testing_X, training_Y, testing_Y = model_data[1]
+        scaled_dimensions = calculate_pca(model_data)
+        cluster = create_cluster(training_X)
+        scaled_cluster = create_cluster(scaled_dimensions)
 
 
 if __name__ == "__main__":
