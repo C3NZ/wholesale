@@ -104,19 +104,19 @@ def calculate_pca(model_data: tuple, n_components: int = 2):
     training_X, testing_X, training_Y, testing_Y = model_data[1]
 
     pca = PCA(n_components=n_components)
-    print("--- START PCA ---")
+    print("\t--- START PCA ---")
     print(
-        f"Reducing dimensionality of our data that has {data_scaling} to {n_components} components\n"
+        f"\tReducing dimensionality of our data that has {data_scaling} to {n_components} components\n"
     )
     reduced_dimensions = pca.fit_transform(training_X)
 
     info_preserved = pca.explained_variance_ratio_
 
-    print("Information preserved through each component:")
-    print(info_preserved)
+    print("\tInformation preserved through each component:")
+    print("\t" + str(info_preserved))
 
-    print(f"Total information preserved: {sum(info_preserved)}")
-    print("--- END PCA ---\n")
+    print(f"\tTotal information preserved: {sum(info_preserved)}")
+    print("\t--- END PCA ---\n")
     return reduced_dimensions
 
 
@@ -133,7 +133,6 @@ def visualize_reduced_cluster(points: np.ndarray, clusters: np.ndarray):
     """
         Visualize our dimensionally reduced data and it's' clusters
     """
-    print("Drawing")
     sns.scatterplot(x=points[:, 0], y=points[:, 1])
     sns.scatterplot(x=clusters[:, 0], y=clusters[:, 1])
     plt.show()
@@ -174,12 +173,17 @@ def main():
         )
 
     for model_data in all_model_data:
-
+        print("---PROCESSING DATA FOR")
+        data_scaling = model_data[0]
         training_X, testing_X, training_Y, testing_Y = model_data[1]
         scaled_dimensions = calculate_pca(model_data)
+
+        print("\t---CREATING CLUSTERS---")
         cluster = create_cluster(training_X)
         scaled_cluster = create_cluster(scaled_dimensions)
+
         visualize_reduced_cluster(scaled_dimensions, scaled_cluster.cluster_centers_)
+        print("\t---FINISHED CLUSTERING---\n")
 
 
 if __name__ == "__main__":
