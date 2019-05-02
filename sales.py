@@ -29,15 +29,6 @@ def register_parser():
     )
 
     parser.add_argument(
-        "-a",
-        "--all",
-        dest="all",
-        action="store_true",
-        help="Scale our data using both minmax and standard scaling",
-        default=False,
-    )
-
-    parser.add_argument(
         "-m",
         "--minmax",
         dest="minmax",

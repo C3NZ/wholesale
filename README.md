@@ -33,7 +33,6 @@ To get started!
 ```bash
 python sales.py -h      -> Shows the available commands  
 python sales.py -c      -> Creates a correlation heatmap
-
+python sales.py -s      -> Scale the features with standard scaling and calculate both PCA & clusters.
+python sales.py -m      -> Scale the features with min-max scaling and calculate both PCA & clusters. 
 ```
-
-## Resources
